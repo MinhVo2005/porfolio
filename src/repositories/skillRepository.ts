@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import type { SkillUncheckedCreateInput, SkillUncheckedUpdateInput } from "../../generated/prisma/models";
 
 export const SkillRepository = {
   findAll: (userId: number) =>
@@ -13,14 +14,10 @@ export const SkillRepository = {
   findById: (id: number) =>
     db.skill.findUnique({ where: { id } }),
 
-  create: (data: {
-    userId: number;
-    name: string;
-    category: string;
-    description?: string;
-  }) => db.skill.create({ data }),
+  create: (data: Omit<SkillUncheckedCreateInput, "id">) =>
+    db.skill.create({ data }),
 
-  update: (id: number, data: Parameters<typeof db.skill.update>[0]["data"]) =>
+  update: (id: number, data: SkillUncheckedUpdateInput) =>
     db.skill.update({ where: { id }, data }),
 
   delete: (id: number) =>

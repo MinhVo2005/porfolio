@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import type { UserCreateInput, UserUpdateManyMutationInput } from "../../generated/prisma/models";
 
 export const UserRepository = {
   findFirst: () =>
@@ -17,9 +18,9 @@ export const UserRepository = {
   findById: (id: number) =>
     db.user.findUnique({ where: { id } }),
 
-  create: (data: { name: string; location: string; jobTitle: string; description: string }) =>
+  create: (data: UserCreateInput) =>
     db.user.create({ data }),
 
-  update: (id: number, data: Partial<{ name: string; location: string; jobTitle: string; description: string }>) =>
+  update: (id: number, data: UserUpdateManyMutationInput) =>
     db.user.update({ where: { id }, data }),
 };

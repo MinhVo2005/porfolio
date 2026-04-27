@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import type { CVUncheckedCreateInput, CVUncheckedUpdateInput } from "../../generated/prisma/models";
 
 export const CvRepository = {
   findAll: (userId: number) =>
@@ -10,10 +11,10 @@ export const CvRepository = {
   findById: (id: number) =>
     db.cV.findUnique({ where: { id } }),
 
-  create: (data: { userId: number; lang: string; url: string }) =>
+  create: (data: Omit<CVUncheckedCreateInput, "id">) =>
     db.cV.create({ data }),
 
-  update: (id: number, data: Parameters<typeof db.cV.update>[0]["data"]) =>
+  update: (id: number, data: CVUncheckedUpdateInput) =>
     db.cV.update({ where: { id }, data }),
 
   delete: (id: number) =>

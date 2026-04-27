@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import type { EducationUncheckedCreateInput, EducationUncheckedUpdateInput } from "../../generated/prisma/models";
 
 export const EducationRepository = {
   findAll: (userId: number) =>
@@ -10,17 +11,10 @@ export const EducationRepository = {
   findById: (id: number) =>
     db.education.findUnique({ where: { id } }),
 
-  create: (data: {
-    userId: number;
-    school: string;
-    degree: string;
-    major: string;
-    minor?: string;
-    startDate: Date;
-    graduationDate?: Date;
-  }) => db.education.create({ data }),
+  create: (data: Omit<EducationUncheckedCreateInput, "id">) =>
+    db.education.create({ data }),
 
-  update: (id: number, data: Parameters<typeof db.education.update>[0]["data"]) =>
+  update: (id: number, data: EducationUncheckedUpdateInput) =>
     db.education.update({ where: { id }, data }),
 
   delete: (id: number) =>

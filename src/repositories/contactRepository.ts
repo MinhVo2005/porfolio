@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
-import { ContactType } from "../../generated/prisma/enums";
+import type { ContactUncheckedCreateInput, ContactUncheckedUpdateInput } from "../../generated/prisma/models";
+import type { ContactType } from "../../generated/prisma/enums";
 
 export const ContactRepository = {
   findAll: (userId: number) =>
@@ -8,10 +9,10 @@ export const ContactRepository = {
   findByType: (userId: number, type: ContactType) =>
     db.contact.findFirst({ where: { userId, type } }),
 
-  create: (data: { userId: number; type: ContactType; contactInfo: string }) =>
+  create: (data: Omit<ContactUncheckedCreateInput, "id">) =>
     db.contact.create({ data }),
 
-  update: (id: number, data: Parameters<typeof db.contact.update>[0]["data"]) =>
+  update: (id: number, data: ContactUncheckedUpdateInput) =>
     db.contact.update({ where: { id }, data }),
 
   delete: (id: number) =>

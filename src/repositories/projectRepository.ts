@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import type { ProjectUncheckedCreateInput, ProjectUncheckedUpdateInput } from "../../generated/prisma/models";
 
 export const ProjectRepository = {
   findAll: (userId: number) =>
@@ -18,18 +19,10 @@ export const ProjectRepository = {
   findById: (id: number) =>
     db.project.findUnique({ where: { id }, include: { skills: true } }),
 
-  create: (data: {
-    userId: number;
-    name: string;
-    description: string;
-    url?: string;
-    githubUrl?: string;
-    imageUrl?: string;
-    featured?: boolean;
-    order?: number; //Priority, 0 is lowest
-  }) => db.project.create({ data }),
+  create: (data: Omit<ProjectUncheckedCreateInput, "id">) =>
+    db.project.create({ data }),
 
-  update: (id: number, data: Parameters<typeof db.project.update>[0]["data"]) =>
+  update: (id: number, data: ProjectUncheckedUpdateInput) =>
     db.project.update({ where: { id }, data }),
 
   delete: (id: number) =>
