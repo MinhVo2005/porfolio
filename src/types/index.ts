@@ -1,3 +1,11 @@
+import type { ReactNode } from "react";
+
+export type HistoryEntry = {
+  input: string;
+  title: string;
+  card: ReactNode;
+};
+
 export type SectionId =
   | "about"
   | "projects"
@@ -8,72 +16,63 @@ export type SectionId =
   | "contact"
   | "cv";
 
-export interface SidebarSection {
+export type SidebarSection = {
   id: SectionId;
   label: string;
   number: number;
   icon: string;
-}
+};
 
-export interface TerminalLine {
+export type TerminalLine = {
   id: string;
-  type: "input" | "output" | "error" | "banner" | "welcome";
+  type: "output" | "input" | "error" | "banner" | "welcome";
   content: string;
-}
+};
 
-export interface Project {
+export type PortfolioData = {
   name: string;
-  description: string;
-  tech: string[];
-  url?: string;
-  year: number;
-}
-
-export interface Skill {
-  category: string;
-  items: string[];
-}
-
-export interface Experience {
-  company: string;
-  role: string;
-  period: string;
-  description: string;
-}
-
-export interface Education {
-  institution: string;
-  degree: string;
-  period: string;
-  gpa?: string;
-}
-
-export interface Award {
-  name: string;
-  issuer: string;
-  year: number;
-  description?: string;
-}
-
-export interface PortfolioData {
-  name: string;
-  username: string;
-  hostname: string;
+  banner: string;
   role: string;
   location: string;
+  about: string;
   email: string;
   github?: string;
   linkedin?: string;
-  about: string;
-  projects: Project[];
-  skills: Skill[];
-  experience: Experience[];
-  education: Education[];
-  awards: Award[];
   cvUrl?: string;
+  username: string;
+  hostname: string;
   stats: {
     projects: number;
     awards: number;
     gpa: string;
   };
-}
+  projects: {
+    name: string;
+    year: string;
+    description: string;
+    tech: string[];
+    url?: string;
+  }[];
+  skills: {
+    category: string;
+    items: string[];
+  }[];
+  experience: {
+    company: string;
+    role: string;
+    period: string;
+    description: string;
+  }[];
+  education: {
+    institution: string;
+    degree: string;
+    period: string;
+    gpa?: string;
+  }[];
+  awards: {
+    name: string;
+    year: string;
+    issuer: string;
+    description?: string;
+  }[];
+};

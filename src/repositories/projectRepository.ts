@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import type { ProjectUncheckedCreateInput, ProjectUncheckedUpdateInput } from "../../generated/prisma/models";
+import type { ProjectCreateInput, ProjectUpdateInput } from "../../generated/prisma/models";
 
 export const ProjectRepository = {
   findAll: (userId: number) =>
@@ -19,10 +19,10 @@ export const ProjectRepository = {
   findById: (id: number) =>
     db.project.findUnique({ where: { id }, include: { skills: true } }),
 
-  create: (data: Omit<ProjectUncheckedCreateInput, "id">) =>
+  create: (data: Omit<ProjectCreateInput, "id">) =>
     db.project.create({ data }),
 
-  update: (id: number, data: ProjectUncheckedUpdateInput) =>
+  update: (id: number, data: ProjectUpdateInput) =>
     db.project.update({ where: { id }, data }),
 
   delete: (id: number) =>

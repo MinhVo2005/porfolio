@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import type { UserCreateInput, UserUpdateManyMutationInput } from "../../generated/prisma/models";
+import type { UserCreateInput, UserUpdateInput } from "../../generated/prisma/models";
 
 export const UserRepository = {
   findFirst: () =>
@@ -9,7 +9,7 @@ export const UserRepository = {
         cvs: true,
         skills: true,
         experiences: { orderBy: { startDate: "desc" }, include: { skills: true } },
-        projects: { orderBy: { order: "asc" }, include: { skills: true } },
+        projects: { include: { skills: true } },
         awards: { orderBy: { date: "desc" } },
         educations: { orderBy: { startDate: "desc" } },
       },
@@ -21,6 +21,6 @@ export const UserRepository = {
   create: (data: UserCreateInput) =>
     db.user.create({ data }),
 
-  update: (id: number, data: UserUpdateManyMutationInput) =>
+  update: (id: number, data: UserUpdateInput) =>
     db.user.update({ where: { id }, data }),
 };

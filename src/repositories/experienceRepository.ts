@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import type { ExperienceUncheckedCreateInput, ExperienceUncheckedUpdateInput } from "../../generated/prisma/models";
+import type { ExperienceCreateInput, ExperienceUpdateInput } from "../../generated/prisma/models";
 
 export const ExperienceRepository = {
   findAll: (userId: number) =>
@@ -12,10 +12,10 @@ export const ExperienceRepository = {
   findById: (id: number) =>
     db.experience.findUnique({ where: { id }, include: { skills: true } }),
 
-  create: (data: Omit<ExperienceUncheckedCreateInput, "id">) =>
+  create: (data: Omit<ExperienceCreateInput, "id">) =>
     db.experience.create({ data }),
 
-  update: (id: number, data: ExperienceUncheckedUpdateInput) =>
+  update: (id: number, data: ExperienceUpdateInput) =>
     db.experience.update({ where: { id }, data }),
 
   addSkill: (id: number, skillId: number) =>

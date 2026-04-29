@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import type { AwardUncheckedCreateInput, AwardUncheckedUpdateInput } from "../../generated/prisma/models";
+import type { AwardCreateInput, AwardUpdateInput } from "../../generated/prisma/models";
 
 export const AwardRepository = {
   findAll: (userId: number) =>
@@ -11,10 +11,10 @@ export const AwardRepository = {
   findById: (id: number) =>
     db.award.findUnique({ where: { id } }),
 
-  create: (data: Omit<AwardUncheckedCreateInput, "id">) =>
+  create: (data: Omit<AwardCreateInput, "id">) =>
     db.award.create({ data }),
 
-  update: (id: number, data: AwardUncheckedUpdateInput) =>
+  update: (id: number, data: AwardUpdateInput) =>
     db.award.update({ where: { id }, data }),
 
   delete: (id: number) =>
