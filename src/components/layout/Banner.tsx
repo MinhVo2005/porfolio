@@ -25,7 +25,7 @@ export default function Banner({ user }: { user: PortfolioData }) {
         <span className="text-yellow">Welcome.</span>{" "}
         Type <kbd>help</kbd>, click a tab, or press <kbd>1</kbd>–<kbd>8</kbd>.
       </div>
-      <div className="mt-[3px] text-muted text-[11px]">
+      <div className="mt-0.75 text-muted text-[11px]">
         <kbd>{keybind.switchPane.label}</kbd> switch panes · <kbd>{keybind.navUp.label} | {keybind.navDown.label}</kbd> navigate sidebar · <kbd>{keybind.autocomplete.label}</kbd> autocomplete · <kbd>clear</kbd> wipes output
       </div>
     </div>

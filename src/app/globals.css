@@ -111,7 +111,7 @@ html, body {
   background: var(--color-base);
   color: var(--color-fg);
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -129,11 +129,14 @@ kbd {
   border: 1px solid var(--color-border);
   border-radius: 3px;
   font-family: inherit;
-  font-size: 10px;
+  font-size: 14px;
   color: var(--color-dim);
   white-space: nowrap;
 }
 
+* {
+  font-size: 18px;
+}
 /* ── Color utility shorthands ────────────────────────────── */
 .c-red     { color: var(--color-red); }
 .c-green   { color: var(--color-green); }

@@ -71,8 +71,7 @@ function SidebarHeader({ collapsed, activePanel, onToggle }: {
     <div className={`py-1 px-2 border-b border-border flex items-center gap-1.5 text-[11px] shrink-0 ${activePanel === 1 ? "bg-surface" : "bg-transparent"}`}>
       <button
         onClick={(e) => { e.stopPropagation(); onToggle(); }}
-        title="^B"
-        className="w-[22px] h-[22px] rounded border border-border bg-surface text-fg cursor-pointer p-0 grid place-items-center font-mono text-xs"
+        className=" size-10 rounded border border-border bg-surface text-fg cursor-pointer p-0 grid place-items-center text-center"
       >
         {collapsed ? "▸" : "◂"}
       </button>
@@ -82,7 +81,6 @@ function SidebarHeader({ collapsed, activePanel, onToggle }: {
           <span className={activePanel === 1 ? "text-accent font-semibold" : "text-dim"}>
             Sections
           </span>
-          <span className="ml-auto text-muted text-[10px]">^B</span>
         </>
       )}
     </div>
@@ -99,7 +97,7 @@ function SidebarItem({ label, icon, number, collapsed, isActive, isFocused, onCl
       onClick={onClick}
       title={collapsed ? `${number}. ${label}` : undefined}
       className={[
-        "cursor-pointer rounded mb-1 flex items-center",
+        "cursor-pointer rounded mb-1 flex items-center space-x-2",
         collapsed ? "py-2 px-0 gap-0 justify-center" : "py-1.5 px-2 gap-2 justify-start",
         isFocused ? "bg-accent/10 outline outline-1 outline-accent" : isActive ? "bg-surface" : "",
         isActive || isFocused ? "text-accent" : "text-dim",
@@ -107,7 +105,7 @@ function SidebarItem({ label, icon, number, collapsed, isActive, isFocused, onCl
       style={isFocused ? { outlineOffset: "-1px" } : undefined}
     >
       {!collapsed && (
-        <span className={`w-2 text-[10px] text-accent ${isFocused ? "opacity-100" : "opacity-0"}`}>▶</span>
+        <span className={`w-2 text-accent ${isFocused ? "opacity-100" : "opacity-0"}`}>▶</span>
       )}
       <span className={`${collapsed ? "w-auto" : "w-3.5"} text-center ${isActive || isFocused ? "opacity-100" : "opacity-60"}`}>
         {icon}
@@ -115,7 +113,7 @@ function SidebarItem({ label, icon, number, collapsed, isActive, isFocused, onCl
       {!collapsed && (
         <>
           <span>{label}</span>
-          <span className="ml-auto text-[10px] text-muted">{number}</span>
+          <span className="ml-auto text-muted">{number}</span>
         </>
       )}
     </div>
@@ -138,10 +136,24 @@ function SidebarMeta({ user }: { user: PortfolioData }) {
       </div>
 
       <div className="mt-3.5 text-muted text-[11px]">
-        <div className="text-[10px] uppercase tracking-[0.1em]">macros</div>
-        <div className="mt-1 grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 items-center">
-          <kbd>{keybind.toggleSidebar.label}</kbd> <span>{keybind.toggleSidebar.description}</span>
-          <kbd>{keybind.switchPane.label}</kbd>     <span>{keybind.switchPane.description}</span>
+        <div className="text-[10px] uppercase tracking-widest">macros</div>
+        <div className="mt-1 flex flex-col gap-x-2 gap-y-0.5">
+          <div>
+            <kbd>{keybind.navUp.label}</kbd> <span>{keybind.navUp.description}</span>
+          </div>
+          <div>
+            <kbd>{keybind.navDown.label}</kbd> <span>{keybind.navDown.description}</span>
+          </div>
+          <div>
+            <kbd>{keybind.navBack.label}</kbd> <span>{keybind.navBack.description}</span>
+          </div>
+          <div>
+            <kbd>{keybind.navOpen.label}</kbd> <span>{keybind.navOpen.description}</span>
+          </div>
+          <div>
+            <kbd>1</kbd>-<kbd>8</kbd> <span>Select an item</span>
+          </div>
+          
         </div>
       </div>
     </>

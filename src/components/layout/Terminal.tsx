@@ -69,7 +69,7 @@ function TerminalHeader({ activePanel }: { activePanel: number }) {
       </span>
       {activePanel === 1 && (
         <span className="text-muted text-[10px] ml-1">
-          — press <kbd>{keybind.scrollUp.label}</kbd> or <kbd>{keybind.navBack.label}</kbd> to type
+          — press <kbd>{keybind.switchPane.label}</kbd> or <kbd>{keybind.navBack.label}</kbd> to type
         </span>
       )}
       <span className="ml-auto text-muted text-[10px]">zsh · utf-8</span>
