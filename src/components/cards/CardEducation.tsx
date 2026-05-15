@@ -1,18 +1,34 @@
 import type { PortfolioData } from "@/types";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 export default function CardEducation({ user }: { user: PortfolioData }) {
   return (
-    <div>
-      <div className="text-accent font-semibold text-[15px]">education</div>
-      <hr className="hr-dashed" />
-      {user.education.map((e, i) => (
-        <div key={i} className="mb-2.5">
-          <div><span className="text-accent font-semibold">{e.institution}</span></div>
-          <div>{e.degree}</div>
-          <div className="text-muted text-[11px]">{e.period}</div>
-          {e.gpa && <div className="mt-1">GPA <span className="text-green font-semibold">{e.gpa}</span></div>}
-        </div>
-      ))}
+    <div className="font-mono text-fg">
+      <div className="space-y-[18px]">
+        {user.education.map((e, i) => (
+          <div key={i}>
+            <SectionLabel>{e.institution}</SectionLabel>
+            <div className=" flex justify-between">
+               <div className="text-[12.5px] mt-0.5">
+              <span>{e.degree} {e.field}</span>
+              {e.minor && (
+                <>
+                  <span className="text-dim"> · </span>
+                  <span className="text-muted">minor in {e.minor}</span>
+                </>
+              )}
+            </div>
+            <div className="mt-0.5 text-dim">{e.period}</div>
+            </div>
+           
+            {e.gpa && (
+              <div className="text-[12px] mt-1">
+                GPA: <span className=" font-semibold">{e.gpa}/4.00</span>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

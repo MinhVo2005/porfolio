@@ -8,24 +8,27 @@ export default function Banner({ user }: { user: PortfolioData }) {
   return (
     <div className="mb-3.5">
       <pre
-        className="text-accent m-0 text-[11px] leading-[1.15]"
+        className="text-accent m-0 leading-[1.2]"
         style={{ fontFamily: '"Courier New", Courier, monospace' }}
       >{user.banner}</pre>
       <div className="text-muted mt-1">
         ────────────────────────────────────────────────────
       </div>
-      <div className="mt-1.5">
-        <span className="text-yellow font-semibold">{user.name}</span>
-        <span className="text-muted"> · </span>
-        <span>{user.role}</span>
-        <span className="text-muted"> · </span>
-        <span className="text-dim">{user.location}</span>
+      <div className="mt-1.5 ">
+        {/*Hard-coded, to be changed */}
+        <span className="text-yellow text-[15px]!">{user.role} </span>
+        <span className="text-[15px]!">@ {user.education[0].institution}</span>
+        <span className="text-muted text-[15px]!"> · </span>
+        <span className="text-dim text-[15px]!">{user.location}</span>
       </div>
-      <div className="mt-1">
-        <span className="text-yellow">Welcome.</span>{" "}
-        Type <kbd>help</kbd>, click a tab, or press <kbd>1</kbd>–<kbd>8</kbd>.
+      <div className="mt-1 text-[15px]!">
+        <span className="text-yellow text-[15px]!">Welcome.</span>{" "}
+        Press <kbd>i</kbd> to start typing.
       </div>
-      <div className="mt-0.75 text-muted text-[11px]">
+      <div className="mt-1 text-[15px]!">
+        Type <kbd>help</kbd>, click a tab, or press <kbd>1</kbd>–<kbd>8</kbd>
+      </div>
+      <div className="mt-0.75 text-muted text-[15px]!">
         <kbd>{keybind.switchPane.label}</kbd> switch panes · <kbd>{keybind.navUp.label} | {keybind.navDown.label}</kbd> navigate sidebar · <kbd>{keybind.autocomplete.label}</kbd> autocomplete · <kbd>clear</kbd> wipes output
       </div>
     </div>

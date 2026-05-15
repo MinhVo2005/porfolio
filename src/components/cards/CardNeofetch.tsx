@@ -1,20 +1,41 @@
 import type { PortfolioData } from "@/types";
+import SectionLabel from "@/components/ui/SectionLabel";
 
-const ASCII_FACE = `     .--.
-    |o_o |
-    |:_/ |
-   //   \\ \\
-  (|     | )
- /'\\_   _/\`\\
- \\___)=(___/`;
+const ASCII_FACE = ` 
+                  .88888888:.
+                88888888.88888.
+              .8888888888888888.
+              888888888888888888
+              88' _\`88'_  \`88888
+              88 88 88 88  88888
+              88_88_::_88_:88888
+              88:::,::,:::::8888
+              88\`:::::::::'\`8888
+             .88  \`::::'    8:88.
+            8888            \`8:888.
+          .8888'             \`888888.
+         .8888:..  .::.  ...:'8888888:.
+        .8888.'     :'     \`'::\`88:88888
+       .8888        '         \`.888:8888.
+      888:8         .           888:88888
+    .888:88        .:           888:88888:
+    8888888.       ::           88:888888
+    \`.::.888.      ::          .88888888
+   .::::::.888.    ::         :::\`8888'.:.
+  ::::::::::.888   '         .::::::::::::
+  ::::::::::::.8    '      .:8::::::::::::.
+ .::::::::::::::.        .:888:::::::::::::
+ :::::::::::::::88:.__..:88888:::::::::::'
+  \`'.:::::::::::88888888888.88:::::::::'
+        \`':::_:' -- '' -'-' \`':_::::'`;
+                
 
 export default function CardNeofetch({ user }: { user: PortfolioData }) {
   return (
     <div>
-      <div className="text-accent font-semibold text-[15px]">neofetch</div>
-      <hr className="hr-dashed" />
+      <SectionLabel>system</SectionLabel>
       <div className="grid gap-4 grid-cols-[auto_1fr]">
-        <pre className="text-accent m-0 text-[10px] leading-[1.1]">{ASCII_FACE}</pre>
+        <pre className="text-accent m-0 text-[6px]! leading-[1.1]">{ASCII_FACE}</pre>
         <div className="text-xs">
           <div>
             <span className="text-accent font-semibold">{user.username}</span>

@@ -24,7 +24,7 @@ export default function Terminal({
 }: Props) {
   return (
     <div
-      onClick={() => { setActivePanel(2); inputRef.current?.focus(); }}
+      onClick={() => { setActivePanel(2); if (activePanel !== 2 && !window.getSelection()?.toString()) inputRef.current?.focus(); }}
       className={`border rounded-md bg-panel flex flex-col overflow-hidden min-h-0 ${activePanel === 2 ? "border-accent" : "border-border"}`}
     >
       <TerminalHeader activePanel={activePanel} />
@@ -43,7 +43,6 @@ export default function Terminal({
           <Prompt username={user.username} hostname={user.hostname} />
           <input
             ref={inputRef}
-            autoFocus
             value={value}
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={onKey}

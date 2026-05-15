@@ -43,6 +43,7 @@ export function useKeyboard({
       matchesKeybind(e, action, keybindStore.getState().keybind);
 
     const handler = (e: KeyboardEvent) => {
+      if (e.shiftKey) return;
       const isInput = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement;
 
       if (matches(e, "toggleSidebar")) {
@@ -66,6 +67,12 @@ export function useKeyboard({
 
       if (isInput) return;
 
+      if (matches(e, "navBack")) {
+          e.preventDefault();
+          goToTerminal();
+          return;
+      }
+
       // ── Sidebar navigation ──────────────────────────────────────
       if (activePanel === 1) {
         if (matches(e, "navDown")) {
@@ -82,11 +89,6 @@ export function useKeyboard({
           e.preventDefault();
           const s = SECTIONS[sidebarFocus];
           if (s) { submit(s.cmd); goToTerminal(); }
-          return;
-        }
-        if (matches(e, "navBack")) {
-          e.preventDefault();
-          goToTerminal();
           return;
         }
       }

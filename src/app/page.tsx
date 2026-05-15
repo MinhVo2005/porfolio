@@ -65,7 +65,7 @@ export default function Home() {
       <div
         className="flex-1 grid gap-2 p-2 min-h-0"
         style={{
-          gridTemplateColumns: collapsed ? "44px 1fr" : "220px 1fr",
+          gridTemplateColumns: collapsed ? "54px 1fr" : "240px 1fr",
           transition: "grid-template-columns 180ms ease",
         }}
       >

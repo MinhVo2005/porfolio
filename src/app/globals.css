@@ -30,7 +30,7 @@
   --color-green:      #9ece6a;
   --color-yellow:     #e0c070;
 
-  --font-mono: var(--font-geist-mono), "JetBrains Mono", "Fira Code", Consolas, "Courier New", monospace;
+  --font-mono: var(--font-ibm), "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
 }
 
 /* ── Nord ────────────────────────────────────────────────── */
@@ -56,52 +56,28 @@
   --color-yellow:    #ebcb8b;
 }
 
-/* ── Amber (retro CRT) ───────────────────────────────────── */
-[data-theme="amber"] {
-  --color-base:      #1a1305;
-  --color-titlebar:  #241a07;
-  --color-panel:     #221807;
-  --color-surface:   #2b1f0a;
-  --color-border:    #3a2a10;
-  --color-border-2:  #4a3614;
-  --color-fg:        #f0b86e;
-  --color-fg-bright: #ffd99a;
-  --color-dim:       #8a6a3a;
-  --color-muted:     #b08a50;
-  /* monochrome — all accents collapse to amber/cream */
-  --color-accent:    #f0b86e;
-  --color-teal:      #f0b86e;
-  --color-amber:     #f0b86e;
-  --color-magenta:   #ffd99a;
-  --color-blue:      #ffd99a;
-  --color-cyan:      #ffd99a;
-  --color-red:       #f0b86e;
-  --color-green:     #f0b86e;
-  --color-yellow:    #f0b86e;
-}
 
-/* ── Matrix (green phosphor) ─────────────────────────────── */
-[data-theme="matrix"] {
-  --color-base:      #03130a;
-  --color-titlebar:  #05200f;
-  --color-panel:     #061e10;
-  --color-surface:   #082815;
-  --color-border:    #0d3a1f;
-  --color-border-2:  #10502a;
-  --color-fg:        #7ee787;
-  --color-fg-bright: #b6ffc4;
-  --color-dim:       #3a7a4a;
-  --color-muted:     #5aa06a;
-  /* monochrome — all accents collapse to green */
-  --color-accent:    #7ee787;
-  --color-teal:      #7ee787;
-  --color-amber:     #b6ffc4;
-  --color-magenta:   #7ee787;
-  --color-blue:      #b6ffc4;
-  --color-cyan:      #b6ffc4;
-  --color-red:       #7ee787;
-  --color-green:     #7ee787;
-  --color-yellow:    #b6ffc4;
+/* ── Classic (pure black terminal) ──────────────────────── */
+[data-theme="classic"] {
+  --color-base:      #000000;
+  --color-titlebar:  #0a0a0a;
+  --color-panel:     #0d0d0d;
+  --color-surface:   #1a1a1a;
+  --color-border:    #2a2a2a;
+  --color-border-2:  #3a3a3a;
+  --color-fg:        #e0e0e0;
+  --color-fg-bright: #ffffff;
+  --color-dim:       #555555;
+  --color-muted:     #888888;
+  --color-accent:    #00ff9f;
+  --color-teal:      #00ff9f;
+  --color-amber:     #ffcc00;
+  --color-magenta:   #ff55ff;
+  --color-blue:      #5599ff;
+  --color-cyan:      #00ccff;
+  --color-red:       #ff4444;
+  --color-green:     #00dd44;
+  --color-yellow:    #ffcc00;
 }
 
 /* ── Base styles ─────────────────────────────────────────── */
@@ -137,6 +113,34 @@ kbd {
 * {
   font-size: 18px;
 }
+/* ── Scrollbar ───────────────────────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-2) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-2);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-dim);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 /* ── Color utility shorthands ────────────────────────────── */
 .c-red     { color: var(--color-red); }
 .c-green   { color: var(--color-green); }

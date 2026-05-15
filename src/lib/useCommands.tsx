@@ -4,7 +4,7 @@ import type { PortfolioData, SectionId } from "@/types";
 import {
   CardAbout, CardWhoami, CardProjects, CardOpen, CardSkills,
   CardExperience, CardEducation, CardAwards, CardContact,
-  CardCV, CardNeofetch, CardHelp, CardError, CardSetup, CardTheme,
+  CardNeofetch, CardHelp, CardError, CardSetup, CardTheme,
 } from "@/components/cards";
 import { keybindStore } from "@/store/keybindStore";
 import { KEYBIND_ACTIONS } from "@/lib/keybinds";
@@ -27,8 +27,8 @@ function parseCombo(comboStr: string): KeyCombo | null {
   const ctrl  = parts.includes("ctrl");
   const meta  = parts.includes("meta") || parts.includes("cmd");
   const alt   = parts.includes("alt");
-  const shift = parts.includes("shift");
-  return { key, ctrl: ctrl || undefined, meta: meta || undefined, alt: alt || undefined, shift: shift || undefined };
+  if (parts.includes("shift")) return null;
+  return { key, ctrl: ctrl || undefined, meta: meta || undefined, alt: alt || undefined };
 }
 
 function comboLabel(combo: KeyCombo): string {
@@ -79,9 +79,12 @@ export function useCommands({ user, setActiveTab, submitRef }: Options) {
         setActiveTab("projects");
         return { title: "projects", card: <CardProjects user={user} onOpen={onOpen} /> };
 
-      case "open": case "cat":
-        if (!arg) return { title: "error", card: <div><span className="c-red">usage:</span> {cmd} &lt;project name&gt;</div> };
-        return { title: `${cmd} ${arg}`, card: <CardOpen user={user} name={arg} /> };
+      case "open": case "cat": {
+        if (!arg) return { title: "error", card: <div><span className="c-red">usage:</span> {cmd} &lt;id&gt; [--show]</div> };
+        const showImg = arg.includes("--show");
+        const projectName = arg.replace("--show", "").trim();
+        return { title: `${cmd} ${projectName}`, card: <CardOpen user={user} name={projectName} showImg={showImg} /> };
+      }
 
       case "skills":
         setActiveTab("skills");
@@ -105,13 +108,12 @@ export function useCommands({ user, setActiveTab, submitRef }: Options) {
 
       case "cv":
         setActiveTab("cv");
-        return { title: "cv", card: <CardCV user={user} /> };
+        if (user.cvUrl) {
+          window.open(user.cvUrl, "_blank", "noreferrer");
+          return { title: "cv", card: <div><span className="c-green">opening cv</span> <a className="c-dim" href={user.cvUrl} target="_blank" rel="noreferrer">{user.cvUrl}</a></div> };
+        }
+        return { title: "cv", card: <div className="text-muted">no cv uploaded yet.</div> };
 
-      case "pwd":
-        return { title: "pwd", card: <div className="c-dim">/home/{user.username}/portfolio</div> };
-
-      case "echo":
-        return { title: "echo", card: <div>{arg || ""}</div> };
 
       case "setup": {
         const err = (msg: string) => ({ title: "setup", card: <CardSetup success={false} message={msg} /> });
@@ -156,24 +158,6 @@ export function useCommands({ user, setActiveTab, submitRef }: Options) {
         themeStore.getState().setTheme(name);
         return { title: "theme", card: <CardTheme current={name} switched={name} /> };
       }
-
-      case "vim": case "nvim":
-        return { title: cmd, card: (
-          <div>
-            <div className="c-red bold">you&apos;ve opened {cmd}.</div>
-            <div className="c-dim" style={{ marginTop: 4 }}>good luck getting out.</div>
-            <div style={{ marginTop: 4 }}>hint: type <span className="c-teal">:q</span> to escape.</div>
-          </div>
-        )};
-
-      case ":q": case ":wq": case ":x": case ":qa": case ":qa!":
-        return { title: "vim", card: <div className="c-green">successfully exited vim. welcome back.</div> };
-
-      case "sudo":
-        return { title: "sudo", card: <div><span className="c-red">permission denied.</span> nice try.</div> };
-
-      case "exit":
-        return { title: "exit", card: <div className="c-dim">you can&apos;t exit a portfolio. type <span className="c-magenta">help</span>.</div> };
 
       default:
         return { title: "error", card: <CardError cmd={cmd} /> };

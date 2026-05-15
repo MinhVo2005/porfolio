@@ -1,26 +1,21 @@
 import type { PortfolioData } from "@/types";
 import { parseText } from "@/lib/utils";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 
 export default function CardAbout({ user }: { user: PortfolioData }) {
   return (
     <div>
-      <div className="text-accent font-semibold text-lg">{user.name}</div>
-      <div className="text-dim">{user.role} · {user.location}</div>
-      <hr className="hr-dashed" />
+      <div className="text-accent font-semibold">{user.name}</div>
+      <div className="text-dim text-[12px]">{user.role} · {user.location}</div>
+      <SectionLabel>about</SectionLabel>
       <ul>
-        {parseText(user.about).map(
-        (str,idx) => (
-          <div
-          className="flex item-center text-md"
-          key={idx}>
-             ✦ {str}
-          </div>
-        )
-      )}
+        {parseText(user.about).map((str, idx) => (
+          <div className="flex items-center text-md" key={idx}>· {str}</div>
+        ))}
       </ul>
 
-      <hr className="hr-dashed" />
+      <SectionLabel>links</SectionLabel>
       <div className="flex gap-4 items-center">
         {user.email &&
         <a className="size-5 text-muted hover:text-accent transition-colors"

@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export type ThemeName = "default" | "nord" | "amber" | "matrix";
-export const THEMES: ThemeName[] = ["default", "nord", "amber", "matrix"];
+export type ThemeName = "default" | "nord" |  "classic";
+export const THEMES: ThemeName[] = ["default", "nord", "classic"];
 
 type ThemeStore = {
   theme: ThemeName;

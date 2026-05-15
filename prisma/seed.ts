@@ -1,4 +1,4 @@
-import { PrismaClient } from "../generated/prisma/client";
+import { PrismaClient, Proficiency } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import * as dotenv from "dotenv";
 
@@ -40,34 +40,35 @@ async function main() {
 
   // CV
   await db.cV.create({
-    data: { userId: user.id, lang: "en", url: "/MASTER_CV.docx" },
+    data: { userId: user.id, lang: "en", url: "https://drive.google.com/file/d/11kFaVDhfzCGaBadSJkTdLj-GvqiVuFHk/view?usp=sharingaw" },
   });
 
   // Education
   await db.education.create({
     data: {
-      userId: user.id,
-      school:          "McGill University",
-      degree:          "Bachelor of Software Engineering, Co-op",
-      major:           "Software Engineering",
-      gpa:             3.95,
-      startDate:       new Date("2024-09-01"),
-      graduationDate:  new Date("2028-04-30"),
+      userId:        user.id,
+      school:        "McGill University",
+      degree:        "B.Eng.",
+      field:         "Software Engineering, Co-op",
+      gpa:           3.95,
+      startDate:     new Date("2024-09-01"),
+      graduationDate: new Date("2028-04-30"),
     },
   });
 
   // Skills
   const skillData = [
     // Languages
-    { name: "Python",       category: "Languages" },
-    { name: "TypeScript",   category: "Languages" },
-    { name: "JavaScript",   category: "Languages" },
-    { name: "Java",         category: "Languages" },
-    { name: "C",            category: "Languages" },
-    { name: "C++",          category: "Languages" },
-    { name: "Bash",         category: "Languages" },
-    { name: "HTML",         category: "Languages" },
-    { name: "CSS",          category: "Languages" },
+    { name: "Python",       category: "Languages", proficiency: Proficiency.PRIMARY      },
+    { name: "TypeScript",   category: "Languages", proficiency: Proficiency.PRIMARY      },
+    { name: "JavaScript",   category: "Languages", proficiency: Proficiency.PRIMARY      },
+    { name: "Java",         category: "Languages", proficiency: Proficiency.PROFICIENT   },
+    { name: "C",            category: "Languages", proficiency: Proficiency.PROFICIENT   },
+    { name: "C++",          category: "Languages", proficiency: Proficiency.PROFICIENT   },
+    { name: "Lua",          category: "Languages", proficiency: Proficiency.INTERMEDIATE },
+    { name: "Bash",         category: "Languages", proficiency: Proficiency.INTERMEDIATE },
+    { name: "HTML",         category: "Languages", proficiency: Proficiency.INTERMEDIATE },
+    { name: "CSS",          category: "Languages", proficiency: Proficiency.INTERMEDIATE },
     // Frameworks & Libraries
     { name: "ReactJS",      category: "Frameworks & Libraries" },
     { name: "NodeJS",       category: "Frameworks & Libraries" },
@@ -109,7 +110,12 @@ async function main() {
       userId:      user.id,
       company:     "ECSESS",
       position:    "Website Committee Member",
-      description: "Maintained and scaled a production website serving 1,000+ daily users across McGill's ECSE student community. Planned and designed pages using Svelte and TailwindCSS, improving visual presentation and responsiveness. Developed automated internal tools to handle bug reports and content management. Collaborated with the team using Git/GitHub, conducting code reviews and participating in pull request workflows.",
+      description: "Maintained and scaled a production website serving 1,000+ daily users.",
+      highlight:   [
+        "Planned and designed pages using Svelte and TailwindCSS, improving visual presentation and responsiveness.",
+        "Developed automated internal tools to handle bug reports and content management.",
+        "Collaborated with the team using Git/GitHub, conducting code reviews and participating in pull request workflows.",
+      ],
       startDate:   new Date("2024-09-01"),
       order:       0,
       skills:      { connect: [skill("Svelte"), skill("TailwindCSS"), skill("Git")] },
@@ -121,7 +127,10 @@ async function main() {
       userId:      user.id,
       company:     "Bonjour Pho",
       position:    "Kitchen Assistant",
-      description: "Worked in a fast-paced environment, maintaining speed, preparation, and organization during peak service hours.",
+      description: "Worked in a fast-paced environment during peak service hours.",
+      highlight:   [
+        "Maintained speed, preparation, and organization under pressure.",
+      ],
       startDate:   new Date("2025-01-01"),
       order:       1,
       skills:      { connect: [] },
@@ -132,12 +141,19 @@ async function main() {
   await db.project.create({
     data: {
       userId:      user.id,
-      name:        "Home Server",
-      category:    "Infrastructure",
-      status:      "BUILDING",
+      name:        "homeserver",
+      displayName: "Home Server",
+      category:    "infra",
+      status:      "RUNNING",
       featured:    true,
       order:       0,
-      description: "Orchestrated a self-hosted Kubernetes (K3S) cluster on Debian to deploy and manage containerized applications across multiple services. Configured remote access via SSH and exposed services securely using Traefik as a reverse proxy with Cloudflare Tunnels. Containerized and deployed personal projects including Discord bots and home automation apps using Docker.",
+      img:         [],
+      description: "Self-hosted K3S cluster on Debian, exposed through Cloudflare Tunnels.",
+      highlights:  [
+        "Orchestrated a self-hosted Kubernetes (K3S) cluster on Debian to deploy and manage containerized apps across multiple services.",
+        "Configured remote SSH access on the local network and exposed services securely via Traefik reverse proxy + Cloudflare Tunnels.",
+        "Containerized personal projects — Discord bots, home automation — with Docker for reproducible builds and service isolation.",
+      ],
       skills:      { connect: [skill("Docker"), skill("Kubernetes"), skill("Linux"), skill("Bash"), skill("Traefik")] },
     },
   });
@@ -145,38 +161,66 @@ async function main() {
   await db.project.create({
     data: {
       userId:      user.id,
-      name:        "TheGardens",
-      category:    "Embedded",
-      status:      "ARCHIVED",
+      name:        "fishy",
+      displayName: "It's Getting Fishy",
+      category:    "game",
+      status:      "SHIPPED",
       featured:    true,
       order:       1,
-      description: "Designed an IoT gesture-control glove using ESP-32 microcontroller integrating with MPU-9250 to track hand movement and cursor control via BLE. Programmed embedded firmware in C++, applying filter and gesture tracking algorithms. Developed a full-stack banking application in Flutter with a Python backend as a sponsor challenge. Won 3rd place Desjardins-Sponsor Challenge at ConuHacks X.",
-      skills:      { connect: [skill("ESP-32"), skill("C++"), skill("Flutter"), skill("Python")] },
+      img:         [],
+      description: "Fishing game for Playdate handhelds. 1st place at CodeJam 15.",
+      highlights:  [
+        "Built a fishing game for the Playdate handheld console in 48 hours at McGill CodeJam 15.",
+        "Implemented real-time game loop, physics-based casting mechanics, and fish AI using the Playdate SDK in Lua.",
+        "Won 1st place overall against 30+ teams at McGill CodeJam 15.",
+      ],
+      githubUrl: "https://devpost.com/software/it-s-getting-fishy?_gl=1*1f2cc0*_gcl_au*Mjc4MTExODE2LjE3Nzg1NDIwMDQ.*_ga*NTk2ODUyMzIyLjE3Nzg1NDIwMDU.*_ga_0YHJK3Y10M*czE3Nzg3NzQ3OTgkbzMkZzEkdDE3Nzg3NzQ4MTgkajQwJGwwJGgw",
+      skills:      { connect: [skill("C"), skill("Lua")] },
     },
   });
 
   await db.project.create({
     data: {
       userId:      user.id,
-      name:        "Full Stack Messaging App",
-      category:    "Web",
-      status:      "DEPLOYING",
+      name:        "gardens",
+      displayName: "TheGardens",
+      category:    "iot",
+      status:      "ARCHIVED",
       featured:    true,
       order:       2,
-      description: "Handled authorization using bcryptJS password hashing, JWT session tokens, and SMTP for email verification. Developed a REST API with dynamic Express routing and integrated Pusher for real-time messaging. Built with ReactJS and TypeScript, deployed on Render (backend) and Vercel (frontend). Designed a MongoDB document schema to persist user profiles, messages, and images.",
-      skills:      { connect: [skill("ReactJS"), skill("TypeScript"), skill("NodeJS")] },
+      img:         [
+        "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/004/204/084/datas/original.jpeg",
+        "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/004/204/085/datas/original.jpeg",
+        "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/004/204/086/datas/original.jpeg",
+      ],
+      description: "IoT gesture-control glove + Flutter banking app. 3rd at ConuHacks X.",
+      highlights:  [
+        "Designed an IoT gesture-control glove using ESP-32 integrating MPU-9250 to track hand movement and cursor control via BLE.",
+        "Programmed embedded firmware in C++, applying Kalman filter and gesture tracking algorithms for low-latency response.",
+        "Developed a full-stack banking application in Flutter with a Python backend as a Desjardins sponsor challenge.",
+        "Won 3rd place in the Desjardins Sponsor Challenge at ConuHacks X.",
+      ],
+      githubUrl: "https://devpost.com/software/thegardens?_gl=1*gc7zkz*_gcl_au*Mjc4MTExODE2LjE3Nzg1NDIwMDQ.*_ga*NTk2ODUyMzIyLjE3Nzg1NDIwMDU.*_ga_0YHJK3Y10M*czE3Nzg3NzQ3OTgkbzMkZzEkdDE3Nzg3NzQ4NTgkajYwJGwwJGgw",
+      skills:      { connect: [skill("ESP-32"), skill("C++ (Embedded)"), skill("Flutter"), skill("Python")] },
     },
   });
 
   await db.project.create({
     data: {
       userId:      user.id,
-      name:        "DPM Delivery Robot",
-      category:    "Robotics",
+      name:        "dpm",
+      displayName: "DPM Delivery Robot",
+      category:    "robotics",
       status:      "ARCHIVED",
       featured:    false,
       order:       3,
-      description: "Designed an autonomous navigation system for Lego-based delivery robots using BrickPi 3, integrating ultrasonic and color sensors for obstacle detection and path planning. Implemented a multi-threaded Python control system on Raspberry Pi OS to manage concurrent sensor data processing and motor control. Developed a test suite to validate robot navigation, color detection, and delivery functionalities.",
+      img:         [],
+      description: "Autonomous navigation for a LEGO delivery robot.",
+      highlights:  [
+        "Designed an autonomous navigation system for LEGO-based delivery robots using BrickPi 3, integrating ultrasonic and color sensors for obstacle avoidance.",
+        "Implemented a multi-threaded Python control system on Raspberry Pi OS for concurrent sensor data processing and motor control.",
+        "Developed a test suite to validate robot navigation, color detection, and delivery functionalities across multiple scenarios.",
+      ],
       skills:      { connect: [skill("Python"), skill("BrickPi 3"), skill("Raspberry Pi"), skill("Git"), skill("Linux")] },
     },
   });
@@ -184,12 +228,60 @@ async function main() {
   await db.project.create({
     data: {
       userId:      user.id,
-      name:        "Discord Music Bot",
-      category:    "Bots",
-      status:      "DEPLOYING",
-      featured:    false,
+      name:        "msg",
+      displayName: "Messaging App",
+      category:    "web",
+      status:      "SHIPPED",
+      featured:    true,
       order:       4,
-      description: "Developed a fully functional music bot that can search, play, pause, and skip songs in the queue. Built with JavaScript, discord.js, and NPM libraries for song search and playback.",
+      img:         [],
+      description: "Real-time messaging with auth, REST, and Pusher sockets.",
+      highlights:  [
+        "Handled authorization using bcryptJS password hashing, JWT session tokens, and SMTP for email verification.",
+        "Developed a REST API with dynamic Express routing and integrated Pusher WebSockets for real-time message delivery.",
+        "Built with ReactJS and TypeScript, deployed on Render (backend) and Vercel (frontend) with a MongoDB document schema.",
+      ],
+      skills:      { connect: [skill("ReactJS"), skill("TypeScript"), skill("NodeJS")] },
+    },
+  });
+
+  await db.project.create({
+    data: {
+      userId:      user.id,
+      name:        "ecsess",
+      displayName: "ECSESS Website",
+      category:    "web",
+      status:      "SHIPPED",
+      featured:    false,
+      order:       5,
+      img:         [],
+      description: "Production site serving 1,000+ daily users across McGill ECSE.",
+      highlights:  [
+        "Maintained and scaled a production website serving 1,000+ daily users across McGill's ECSE student community.",
+        "Designed and implemented pages using Svelte and TailwindCSS, improving visual presentation and mobile responsiveness.",
+        "Developed automated internal tools to handle bug reports and content management workflows.",
+      ],
+      githubUrl: "https://ecsess.mcgilleus.ca",
+      skills:      { connect: [skill("Svelte"), skill("TailwindCSS"), skill("Git")] },
+    },
+  });
+
+  await db.project.create({
+    data: {
+      userId:      user.id,
+      name:        "musicbot",
+      displayName: "Discord Music Bot",
+      category:    "bot",
+      status:      "SHIPPED",
+      featured:    false,
+      order:       6,
+      img:         [],
+      description: "Search / play / queue / skip — a classic music bot done right.",
+      highlights:  [
+        "Developed a fully functional Discord bot with search, play, pause, skip, and queue management commands.",
+        "Built with discord.js and YouTube search libraries, self-hosted on the home K3S cluster.",
+        "Implemented persistent queue state and graceful disconnect handling for uninterrupted listening sessions.",
+      ],
       skills:      { connect: [skill("JavaScript"), skill("NodeJS")] },
     },
   });

@@ -46,6 +46,7 @@ model Experience {
   company     String
   position    String
   description String
+  highlight   String[]
   startDate   DateTime
   endDate     DateTime?
   order       Int       @default(0)
@@ -55,15 +56,18 @@ model Experience {
 }
 
 model Project {
-  id          Int     @id @default(autoincrement())
-  name        String
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  displayName String
   description String
+  highlights  String[]
   githubUrl   String?
-  featured    Boolean @default(false)
+  img         String[]
+  featured    Boolean       @default(false)
   category    String
-  status      ProjectStatus @default(DEPLOYING)
-  order       Int     @default(0)
-  user        User    @relation(fields: [userId], references: [id])
+  status      ProjectStatus @default(SHIPPED)
+  order       Int           @default(0)
+  user        User          @relation(fields: [userId], references: [id])
   userId      Int
   skills      Skill[]
 }
@@ -74,6 +78,7 @@ model Award {
   date        DateTime
   event       String
   description String
+  url         String?
   user        User     @relation(fields: [userId], references: [id])
   userId      Int
 }
@@ -82,9 +87,9 @@ model Education {
   id             Int       @id @default(autoincrement())
   school         String
   degree         String
-  major          String
+  field          String
   minor          String?
-  gpa            Float
+  gpa            Float?
   startDate      DateTime
   graduationDate DateTime?
   user           User      @relation(fields: [userId], references: [id])
@@ -95,6 +100,7 @@ model Skill {
   id          Int          @id @default(autoincrement())
   name        String
   category    String
+  proficiency Proficiency  @default(INTERMEDIATE)
   description String?
   user        User         @relation(fields: [userId], references: [id])
   userId      Int
@@ -109,7 +115,13 @@ enum ContactType {
 }
 
 enum ProjectStatus {
-  BUILDING @map("Building")
-  DEPLOYING @map("Deploying")
-  ARCHIVED @map("Archived")
+  RUNNING  @map("running")
+  SHIPPED  @map("shipped")
+  ARCHIVED @map("archived")
+}
+
+enum Proficiency {
+  PRIMARY      @map("primary")
+  PROFICIENT   @map("proficient")
+  INTERMEDIATE @map("intermediate")
 }

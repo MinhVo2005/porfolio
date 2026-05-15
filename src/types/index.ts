@@ -29,6 +29,16 @@ export type TerminalLine = {
   content: string;
 };
 
+export type SkillLang = {
+  name: string;
+  pct: number;
+  level: 'primary' | 'proficient' | 'intermediate';
+};
+
+export type SkillGroup =
+  | { key: 'languages'; label: string; primary: SkillLang[]; also: string[] }
+  | { key: string; label: string; items: string[] };
+
 export type PortfolioData = {
   name: string;
   banner: string;
@@ -48,26 +58,30 @@ export type PortfolioData = {
   };
   projects: {
     name: string;
-    year: string;
+    displayName: string;
     description: string;
-    tech: string[];
+    highlights: string[];
+    status: string;
+    category: string;
+    skills: string[];
+    img: string[];
     url?: string;
   }[];
-  skills: {
-    category: string;
-    items: string[];
-  }[];
+  skills: SkillGroup[];
   experience: {
     company: string;
     role: string;
     period: string;
     description: string;
+    highlights: string[];
   }[];
   education: {
     institution: string;
     degree: string;
-    period: string;
+    field: string;
+    minor?: string;
     gpa?: string;
+    period: string;
   }[];
   awards: {
     name: string;

@@ -28,36 +28,32 @@ export type KeybindAction =
 
 export const KEYBINDS: Record<KeybindAction, KeybindDef> = {
   toggleSidebar: {
-    combos: [{ key: "b", ctrl: true }, { key: "b", meta: true },
-      { key: "B", ctrl: true }, { key: "B", meta: true }
-    ],
+    combos: [{ key: "b", ctrl: true }, { key: "b", meta: true }],
     label: "^B",
     description: "toggle sidebar",
   },
   switchPane: {
-    combos: [{ key: "m", ctrl: true }, { key: "m", meta: true },
-      { key: "M", ctrl: true }, { key: "M", meta: true }
-    ],
+    combos: [{ key: "m", ctrl: true }, { key: "m", meta: true }],
     label: "^M",
     description: "switch pane",
   },
   scrollUp: {
-    combos: [{ key: "u", ctrl: true },{ key: "U", ctrl: true }],
+    combos: [{ key: "u", ctrl: true }],
     label: "^U",
     description: "scroll up",
   },
   scrollDown: {
-    combos: [{ key: "d", ctrl: true },{ key: "D", ctrl: true }],
+    combos: [{ key: "d", ctrl: true }],
     label: "^D",
     description: "scroll down",
   },
   navDown: {
-    combos: [{ key: "j" },{ key: "J" }, { key: "ArrowDown" }],
+    combos: [{ key: "j" }, { key: "ArrowDown" }],
     label: "j / ↓",
     description: "navigate down",
   },
   navUp: {
-    combos: [{ key: "k" },{ key: "K" }, { key: "ArrowUp" }],
+    combos: [{ key: "k" }, { key: "ArrowUp" }],
     label: "k / ↑",
     description: "navigate up",
   },
@@ -100,7 +96,7 @@ export function matchesKeybind(
 ): boolean {
   return keybinds[action].combos.some(
     (c) =>
-      e.key === c.key &&
+      e.key.toLowerCase() === c.key.toLowerCase() &&
       !!e.ctrlKey  === !!c.ctrl  &&
       !!e.metaKey  === !!c.meta  &&
       !!e.altKey   === !!c.alt   &&

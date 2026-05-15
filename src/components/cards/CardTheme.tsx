@@ -2,12 +2,12 @@
 
 import { Fragment } from "react";
 import { THEMES, type ThemeName } from "@/store/themeStore";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 const THEME_DESC: Record<ThemeName, string> = {
   default: "dark — deep navy/teal",
   nord:    "cool blues and grays",
-  amber:   "retro amber CRT monochrome",
-  matrix:  "green phosphor monochrome",
+  classic: "pure black terminal, high contrast",
 };
 
 type Props = {
@@ -17,11 +17,11 @@ type Props = {
 
 export default function CardTheme({ current, switched }: Props) {
   return (
-    <div>
+    <div className="font-mono text-fg">
       {switched && (
         <div className="c-green mb-2">switched to theme: {switched}</div>
       )}
-      <div className="text-accent font-semibold mb-1.5">available themes</div>
+      <SectionLabel>available themes</SectionLabel>
       <div className="grid gap-y-0.5 grid-cols-[88px_1fr]">
         {THEMES.map((t) => (
           <Fragment key={t}>

@@ -7,7 +7,6 @@ export { default as CardExperience } from "./CardExperience";
 export { default as CardEducation }  from "./CardEducation";
 export { default as CardAwards }     from "./CardAwards";
 export { default as CardContact }    from "./CardContact";
-export { default as CardCV }         from "./CardCV";
 export { default as CardNeofetch }   from "./CardNeofetch";
 export { default as CardHelp }       from "./CardHelp";
 export { default as CardError }      from "./CardError";

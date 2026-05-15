@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { UserRepository } from "@/repositories/userRepository";
-import type { PortfolioData } from "@/types";
+import type { PortfolioData, SkillLang } from "@/types";
 
 type FullUser = NonNullable<Awaited<ReturnType<typeof UserRepository.findFirst>>>;
 
@@ -13,6 +13,18 @@ type Serialized<T> = T extends Date
   : T;
 
 type SerializedUser = Serialized<FullUser> & { banner: string };
+
+const PROFICIENCY_PCT: Record<string, number> = {
+  PRIMARY:      86,
+  PROFICIENT:   62,
+  INTERMEDIATE: 42,
+};
+
+const PROFICIENCY_LEVEL: Record<string, SkillLang['level']> = {
+  PRIMARY:      'primary',
+  PROFICIENT:   'proficient',
+  INTERMEDIATE: 'intermediate',
+};
 
 function deriveHostname(email: string): string {
   const domain = email.split("@")[1] ?? "";
@@ -31,11 +43,6 @@ function mapToPortfolio(user: SerializedUser): PortfolioData {
   const github = user.contacts.find((c) => c.type === "GITHUB")?.contactInfo;
   const linkedin = user.contacts.find((c) => c.type === "LINKEDIN")?.contactInfo;
   const cvUrl = user.cvs.find((c) => c.lang === "en")?.url ?? user.cvs[0]?.url;
-
-  const skillMap = new Map<string, string[]>();
-  for (const s of user.skills) {
-    skillMap.set(s.category, [...(skillMap.get(s.category) ?? []), s.name]);
-  }
 
   return {
     name: user.name,
@@ -58,25 +65,48 @@ function mapToPortfolio(user: SerializedUser): PortfolioData {
     },
     projects: user.projects.map((p) => ({
       name: p.name,
-      year: "",
+      displayName: p.displayName,
       description: p.description,
-      tech: p.skills.map((s) => s.name),
+      highlights: p.highlights,
+      status: p.status,
+      category: p.category,
+      skills: p.skills.map((s) => s.name),
+      img: p.img,
       url: p.githubUrl ?? undefined,
     })),
-    skills: Array.from(skillMap.entries()).map(([category, items]) => ({
-      category,
-      items,
-    })),
+    skills: (() => {
+      const grouped = new Map<string, typeof user.skills>();
+      for (const s of user.skills) {
+        grouped.set(s.category, [...(grouped.get(s.category) ?? []), s]);
+      }
+      return Array.from(grouped.entries()).map(([category, entries]) => {
+        if (category === 'Languages') {
+          const primary = entries
+            .map((s) => ({
+              name:  s.name,
+              pct:   PROFICIENCY_PCT[s.proficiency] ?? 42,
+              level: PROFICIENCY_LEVEL[s.proficiency] ?? 'intermediate',
+            } satisfies SkillLang))
+            .sort((a, b) => b.pct - a.pct);
+          return { key: 'languages' as const, label: category, primary, also: [] };
+        }
+        return { key: category, label: category, items: entries.map((s) => s.name) };
+      });
+    })(),
     experience: user.experiences.map((e) => ({
-      company: e.company,
-      role: e.position,
-      period: formatPeriod(e.startDate, e.endDate),
+      company:    e.company,
+      role:       e.position,
+      period:     formatPeriod(e.startDate, e.endDate),
       description: e.description,
+      highlights: e.highlight,
     })),
     education: user.educations.map((e) => ({
       institution: e.school,
-      degree: `${e.degree} in ${e.major}`,
-      period: formatPeriod(e.startDate, e.graduationDate),
+      degree:      e.degree,
+      field:       e.field,
+      minor:       e.minor ?? undefined,
+      gpa:         e.gpa != null ? e.gpa.toFixed(2) : undefined,
+      period:      formatPeriod(e.startDate, e.graduationDate),
     })),
     awards: user.awards.map((a) => ({
       name: a.name,
