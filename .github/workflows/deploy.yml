@@ -21,10 +21,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set image tag
+        run: echo "IMAGE_TAG=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')/portfolio:latest" >> $GITHUB_ENV
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           file: Dockerfile.bun
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/portfolio:latest
+          tags: ${{ env.IMAGE_TAG }}
