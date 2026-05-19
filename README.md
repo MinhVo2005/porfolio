@@ -1,59 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Terminal Portfolio
 
-## Getting Started
+An interactive, terminal-style developer portfolio. Navigate by typing commands or using the sidebar.
 
-First, run the development server:
+---
+
+## Prerequisites
+
+- [Bun](https://bun.sh) (primary package manager)
+- [Docker](https://www.docker.com/products/docker-desktop) (for the PostgreSQL database)
+- Node.js 18+ (if not using Bun)
+
+---
+
+## Setup
+
+### 1. Install dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Start the database
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## PostgresSQL
-Run:
-```
-docker compose up
+```bash
+docker compose up -d
 ```
 
-Generate model:
-```
+This starts a PostgreSQL 16 instance on `localhost:5432` with:
+- Database: `portfolio`
+- User: `portfolio`
+- Password: `portfolio`
+
+### 3. Generate the Prisma client
+
+```bash
 bunx --bun prisma generate
 ```
 
-For developement
-Apply relation to db:
-```
+### 4. Push the schema to the database
+
+```bash
 bunx --bun prisma db push
 ```
 
-For production:
+### 5. Seed the database
+
+Edit `prisma/seed.ts` with your own data, then run:
+
+```bash
+bun run seed
 ```
-prisma migrate dev
+
+### 6. Start the dev server
+
+```bash
+bun dev
 ```
-for more info @ https://www.prisma.io/docs/orm/reference/prisma-cli-reference#prisma-migrate
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## Environment Variables
+
+Copy `.env` and adjust if your database credentials differ:
+
+```env
+DATABASE_URL=postgresql://portfolio:portfolio@localhost:5432/portfolio
+```
+
+---
+
+## Available Scripts
+
+| Command | Description |
+|---|---|
+| `bun dev` | Start development server with hot reload |
+| `bun run build` | Build for production |
+| `bun start` | Start production server |
+| `bun run lint` | Run ESLint |
+| `bun run seed` | Seed the database (`prisma/seed.ts`) |
+
+---
+
+## Database Management
+
+| Task | Command |
+|---|---|
+| Push schema changes (dev) | `bunx --bun prisma db push` |
+| Create a migration (prod) | `bunx --bun prisma migrate dev` |
+| Open Prisma Studio | `bunx --bun prisma studio` |
+| Regenerate client | `bunx --bun prisma generate` |
+
+---
+
+## Commands Available in the Terminal
+
+Once running, type any of these in the terminal:
+
+```
+help          — list all commands
+about         — about section
+projects      — list all projects
+open <name>   — view a project (add --show for images)
+skills        — skills by category
+experience    — work history
+education     — education
+awards        — awards & achievements
+contact       — contact links
+cv            — open CV in a new tab
+theme [name]  — switch theme (default | nord | classic)
+setup <action> <combo>  — rebind a keyboard shortcut
+clear         — clear the terminal
+```

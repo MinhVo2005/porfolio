@@ -5,7 +5,7 @@ import type { PortfolioData } from "@/types";
 import Tag from "./Tag";
 import SectionLabel from "@/components/ui/SectionLabel";
 
-type Props = { user: PortfolioData; name: string; showImg?: boolean };
+type Props = { user: PortfolioData; name?: string; showImg?: boolean };
 
 function statusColor(status: string) {
   if (status === "RUNNING") return "text-green";
@@ -83,12 +83,16 @@ function ImageGallery({ imgs, onHide }: GalleryProps) {
 }
 
 export default function CardOpen({ user, name, showImg: initialShowImg = false }: Props) {
-  const p =
-    user.projects.find((x) => x.name === name.toLowerCase()) ??
-    user.projects.find((x) => x.displayName.toLowerCase().includes(name.toLowerCase()));
+  const p = name
+    ? (user.projects.find((x) => x.name === name.toLowerCase()) ??
+       user.projects.find((x) => x.displayName.toLowerCase().includes(name.toLowerCase())))
+    : undefined;
 
   const hasImg = (p?.img ?? []).length > 0;
   const [showImg, setShowImg] = useState(initialShowImg);
+
+  if (!name)
+    return <div><span className="text-red">usage:</span> open &lt;id&gt; [--show]</div>;
 
   if (!p)
     return (
