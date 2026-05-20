@@ -74,11 +74,6 @@ RUN chown bun:bun .next
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=bun:bun /app/.next/standalone ./
 COPY --from=builder --chown=bun:bun /app/.next/static ./.next/static
-COPY --from=builder --chown=bun:bun /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder --chown=bun:bun /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
-# If you want to persist the fetch cache generated during the build so that
-# cached responses are available immediately on startup, uncomment this line:
-# COPY --from=builder --chown=bun:bun /app/.next/cache ./.next/cache
 
 # Switch to non-root user for security best practices
 USER bun
@@ -86,5 +81,4 @@ USER bun
 # Expose port 3000 to allow HTTP traffic
 EXPOSE 3000
 
-# Start Next.js standalone server with Bun
-CMD ["sh", "-c", "bunx --bun prisma migrate deploy && bun server.js"]
+CMD ["bun", "server.js"]

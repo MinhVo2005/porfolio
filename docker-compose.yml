@@ -1,5 +1,13 @@
 services:
-
+  app:
+      image: ghcr.io/minhvo2005/portfolio:latest
+      ports:
+        - "3000:3000"
+      environment:
+        DATABASE_URL: postgres://portfolio:portfolio@db:5432/portfolio
+      depends_on:
+        db:
+          condition: service_healthy
   db:
     image: postgres:16-alpine
     restart: unless-stopped
