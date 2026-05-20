@@ -16,6 +16,7 @@ An interactive, terminal-style developer portfolio built with Next.js. Users nav
 
 | Layer | Technology |
 |---|---|
+
 | Framework | Next.js 16 (App Router) |
 | Language | TypeScript 5 (strict mode) |
 | Runtime | React 19 with React Compiler enabled |
