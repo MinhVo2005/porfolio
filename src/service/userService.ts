@@ -1,11 +1,15 @@
+import { unstable_cache } from "next/cache";
 import { UserRepository } from "@/repositories/userRepository";
 import type { UserCreateInput, UserUpdateInput } from "../../generated/prisma/models";
 
+const getCachedUser = unstable_cache(
+  () => UserRepository.findFirst(),
+  ["current-user"],
+  { revalidate: 3600 }
+);
+
 export const UserServices = {
-    //Since only have one user for now, will change when diversify user
-    getCurrentUser: () =>{
-        return UserRepository.findFirst();
-    },
+    getCurrentUser: () => getCachedUser(),
     getById: async (userId: number) => {
         const user = await UserRepository.findById(userId);
         if (!user) throw new Error("User not found!");
